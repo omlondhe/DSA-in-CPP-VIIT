@@ -118,19 +118,15 @@ void addSparseMatrix(Matrix sparse1[MATRIX_SIZE], Matrix sparse2[MATRIX_SIZE], M
 void multiplySparseMatrix(Matrix sparse[MATRIX_SIZE], Matrix transpose[MATRIX_SIZE], Matrix product[MATRIX_SIZE]) {
     int i, j, k = 1;
 
-    product[0].row = sparse[0].row;
-    product[0].column = sparse[0].column;
-    product[0].value = sparse[0].value;
-
     for (i = 1; i <= sparse[0].value;) {
         int row = sparse[i].row;
-        for (j = 1; j < transpose[0].value;) {
+        for (j = 1; j <= transpose[0].value;) {
             int column = transpose[j].row;
             int temp_i = i;
             int temp_j = j;
             int sum = 0;
 
-            while (temp_i < sparse[0].value && sparse[temp_i].row == row && temp_j < transpose[0].value && transpose[temp_j].row == column) {
+            while (temp_i <= sparse[0].value && sparse[temp_i].row == row && temp_j <= transpose[0].value && transpose[temp_j].row == column) {
                 if (sparse[temp_i].column < transpose[temp_j].column) temp_i++;
                 else if (sparse[temp_i].column > transpose[temp_j].column) temp_j++;
                 else sum += sparse[temp_i++].value * transpose[temp_j++].value;
@@ -139,14 +135,18 @@ void multiplySparseMatrix(Matrix sparse[MATRIX_SIZE], Matrix transpose[MATRIX_SI
             if (sum != 0) {
                 product[k].row = row;
                 product[k].column = column;
-                product[k].value = sum;
-                k++;
+                product[k++].value = sum;
             }
 
-            while (j < transpose[0].value && transpose[j].row == column) j++;
+            while (transpose[j].row == column) j++;
         }
-        i++;
+        while (sparse[i].row == row) i++;
     }
+
+
+    product[0].row = sparse[0].row;
+    product[0].column = sparse[0].column;
+    product[0].value = k - 1;
 }
 
 void displayArray(int arr[ROWS][COLS]) {
@@ -215,14 +215,14 @@ int main() {
 0 0 0 0 9
 0 8 0 0 0
 4 0 0 2 0
-0 0 0 0 0
+0 0 0 0 5
 0 0 2 0 0
 
-0 9 0 0 0
-0 0 0 0 8
-0 0 2 0 0
+9 0 0 0 0
+0 0 0 8 0
+0 2 0 0 4
 5 0 0 0 0
-0 0 0 2 0
+0 0 2 0 0
 */
 
 
@@ -230,82 +230,106 @@ int main() {
 0 0 0 0 9
 0 8 0 0 0
 4 0 0 2 0
-0 0 0 0 0
+0 0 0 0 5
 0 0 2 0 0
 ---------------------
 Traditional Matrix
 0 0 0 0 9 
 0 8 0 0 0 
 4 0 0 2 0 
-0 0 0 0 0 
+0 0 0 0 5 
 0 0 2 0 0 
 ---------------------
 Sparse Matrix
-4 | 5 | 5
+5 | 6 | 6
 0 | 4 | 9
 1 | 1 | 8
 2 | 0 | 4
 2 | 3 | 2
+3 | 4 | 5
 4 | 2 | 2
 ---------------------
 Transpose Matrix
-5 | 4 | 5
+6 | 5 | 6
 0 | 2 | 4
 1 | 1 | 8
 2 | 4 | 2
 3 | 2 | 2
 4 | 0 | 9
+4 | 3 | 5
 ---------------------
 ---------------------
 
-0 9 0 0 0
-0 0 0 0 8
-0 0 2 0 0
+9 0 0 0 0
+0 0 0 8 0
+0 2 0 0 4
 5 0 0 0 0
-0 0 0 2 0
+0 0 2 0 0
 ---------------------
 Traditional Matrix
-0 9 0 0 0 
-0 0 0 0 8 
-0 0 2 0 0 
+9 0 0 0 0 
+0 0 0 8 0 
+0 2 0 0 4 
 5 0 0 0 0 
-0 0 0 2 0 
+0 0 2 0 0 
 ---------------------
 Sparse Matrix
-5 | 5 | 5
-0 | 1 | 9
-1 | 4 | 8
-2 | 2 | 2
-3 | 0 | 5
-4 | 3 | 2
----------------------
-Transpose Matrix
-5 | 5 | 5
-0 | 3 | 5
-1 | 0 | 9
-2 | 2 | 2
-3 | 4 | 2
-4 | 1 | 8
----------------------
----------------------
-Adition of two sparse matrix
-5 | 5 | 9
-0 | 1 | 9
-0 | 4 | 9
-1 | 1 | 8
-1 | 4 | 8
-2 | 0 | 4
-2 | 2 | 2
-2 | 3 | 2
+5 | 6 | 6
+0 | 0 | 9
+1 | 3 | 8
+2 | 1 | 2
+2 | 4 | 4
 3 | 0 | 5
 4 | 2 | 2
 ---------------------
-Multiplication of two sparse matrix
-4 | 5 | 5
-0 | 3 | 18
-2 | 0 | 10
-2 | 1 | 36
-2 | 0 | 10
-1 | 1 | 0
+Transpose Matrix
+6 | 5 | 6
+0 | 0 | 9
+0 | 3 | 5
+1 | 2 | 2
+2 | 4 | 2
+3 | 1 | 8
+4 | 2 | 4
 ---------------------
+---------------------
+Adition of two sparse matrix
+6 | 6 | 11
+0 | 0 | 9
+0 | 4 | 9
+1 | 1 | 8
+1 | 3 | 8
+2 | 0 | 4
+2 | 1 | 2
+2 | 3 | 2
+2 | 4 | 4
+3 | 0 | 5
+3 | 4 | 5
+4 | 2 | 4
+---------------------
+Multiplication of two sparse matrix
+5 | 6 | 6
+0 | 2 | 18
+1 | 3 | 64
+2 | 0 | 46
+3 | 2 | 10
+4 | 1 | 4
+4 | 4 | 8
+---------------------
+*/
+
+
+// Cross check
+/*
+0 0 0 0 0
+0 0 10 0 12
+0 0 0 0 0
+0 0 0 5 0
+0 15 12 0 0
+
+0 0 0 0 0
+0 0 0 8 0
+0 0 0 0 23
+0 0 0 9 0
+0 20 25 0 0
+
 */
