@@ -295,6 +295,10 @@ void updateEmployeeById(Employee* head) {
 // Function to show all the available employee list (show the linked list)
 void showEmployees(Employee* head) {
 	Employee* tempHead = head;
+	if (head == NULL) {
+		cout << "Linked List is empty!";
+		return;
+	}
 	cout << "------------------------------------------\n";
 	while (tempHead != NULL) {
 		cout << "|\t" << tempHead->employee_id << "\t|\t" << tempHead->name << "\t|\t" << tempHead->age << "\t|\t" << tempHead->salary;
