@@ -1,4 +1,4 @@
-#include <iostream>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -164,6 +164,134 @@ Employee* deleteEmployeeAtThePosition(Employee* head) {
 	return deleteLastEmployee(head);
 }
 
+// Search employee by ID
+void searchEmployeeById(Employee* head) {
+	int id;
+	cout << "Enter employee id: \t";
+	cin >> id; 
+	Employee* tempHead = head;
+	
+	while (tempHead != NULL) {
+		if (tempHead->employee_id == id) {
+			cout << tempHead->employee_id << " | " << tempHead->name << " | " << tempHead->age << " | " << tempHead->salary << "\n";
+			cout << "---------------------------------------";
+			return;
+		}
+		tempHead = tempHead->next;
+	}
+} 
+
+// Search employees by name
+vector<Employee*> searchEmployeesByName(Employee* head) {
+	string name;
+	cout << "Enter the name: \t";
+	cin >> name;
+	vector<Employee*> employees;
+	Employee* tempHead = head;
+	
+	while (tempHead != NULL) {
+		if (tempHead->name == name) {
+			employees.push_back(tempHead);
+		}
+		tempHead = tempHead->next;
+	}
+	return employees;
+} 
+
+// Search employees by age
+vector<Employee*> searchEmployeesByAge(Employee* head) {
+	int age;
+	cout << "Enter the age: \t";
+	cin >> age;
+	vector<Employee*> employees;
+	Employee* tempHead = head;
+	
+	while (tempHead != NULL) {
+		if (tempHead->age == age) {
+			employees.push_back(tempHead);
+		}
+		tempHead = tempHead->next;
+	}
+	return employees;
+} 
+
+// Search employees by salary
+vector<Employee*> searchEmployeesBySalary(Employee* head) {
+	double salary;
+	cout << "Enter the salary: \t";
+	cin >> salary;
+	vector<Employee*> employees;
+	Employee* tempHead = head;
+
+	while (tempHead != NULL) {
+		if (tempHead->salary == salary) {
+			employees.push_back(tempHead);
+		}
+		tempHead = tempHead->next;
+	}
+	return employees;
+} 
+
+// Show searched employees
+void showSearchedEmployees(vector<Employee*> employees) {
+	for (Employee* employee: employees) {
+		cout << employee->employee_id << " | " << employee->name << " | " << employee->age << " | " << employee->salary << "\n";
+	}
+	cout << "---------------------------------------";
+}
+
+void showSearchedEmployeesResult(vector<Employee*> employees) {
+	if (employees.size() > 0) showSearchedEmployees(employees);
+	else cout << "No search results found\n";
+}
+
+// Update employee by id
+void updateEmployeeById(Employee* head) {
+	int id;
+	cout << "Enter employee id: \t";
+	cin >> id; 
+	Employee* tempHead = head;
+	
+	while (tempHead != NULL) {
+		if (tempHead->employee_id == id) {
+			int choice;
+			while (true) {
+				cout << "What you want to update?\n";
+				cout << "0.\tDone\n";
+				cout << "1.\tName\n";
+				cout << "2.\tAge\n";
+				cout << "3.\tSalary\n";
+				cin >> choice;
+
+				switch (choice) {
+					case 0:
+						return;
+					case 1:
+						cout << "Enter new name:\t";
+						cin >> tempHead->name;
+						cout << "Name updated for employee with id '" << id <<"'!";
+						break;
+					case 2:
+						cout << "Enter new age:\t";
+						cin >> tempHead->age;
+						cout << "Age updated for employee with id '" << id <<"'!";
+						break;
+					case 3:
+						cout << "Enter new salary:\t";
+						cin >> tempHead->salary;
+						cout << "Salary updated for employee with id '" << id <<"'!";
+						break;
+					default:
+						cout << "You made a wrong choice!";
+						break;
+				}
+			}
+		}
+		tempHead = tempHead->next;
+	}
+	cout << "Employee with id '" << id << "' not found!\n";
+} 
+
 // Function to show all the available employee list (show the linked list)
 void showEmployees(Employee* head) {
 	Employee* tempHead = head;
@@ -175,6 +303,7 @@ void showEmployees(Employee* head) {
 	}
 	cout << "NULL\n";
 }
+
 
 void showOptions() {
 	cout << "------------------------------------------\n";
@@ -225,10 +354,26 @@ int main() {
 			case 6:
 				head = deleteEmployeeAtThePosition(head);
 				break;
+			case 7:
+				searchEmployeeById(head);
+				break;
+			case 8:
+				showSearchedEmployeesResult(searchEmployeesByName(head));
+				break;
+			case 9:
+				showSearchedEmployeesResult(searchEmployeesByAge(head));
+				break;
+			case 10:
+				showSearchedEmployeesResult(searchEmployeesBySalary(head));
+				break;
+			case 11:
+				updateEmployeeById(head);
+				break;
 			case 12:
 				exit(0);
 				break;
 			default:
+				cout << "Choose any of the given option.\n";
 				break;
 		}
 	}
