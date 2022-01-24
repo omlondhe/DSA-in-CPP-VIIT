@@ -296,7 +296,7 @@ void updateEmployeeById(Employee* head) {
 void showEmployees(Employee* head) {
 	Employee* tempHead = head;
 	if (head == NULL) {
-		cout << "Linked List is empty!";
+		cout << "Linked List is empty!\n";
 		return;
 	}
 	cout << "------------------------------------------\n";
